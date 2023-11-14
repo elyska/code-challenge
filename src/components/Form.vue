@@ -1,21 +1,31 @@
 <template>
+  <h1>Input</h1>
   <form @submit.prevent>
     <textarea class="form-control"
               rows="10" cols="50"
               v-model="instructions"
               placeholder="Instructions"
     ></textarea>
-    <p>{{instructions}}</p>
+    <br/>
     <button class="btn btn-primary" type="submit" @click="handleInput">Submit</button>
   </form>
+  <br/>
+  <p>
+    <h1 v-if="output.length > 0">Output</h1>
+    <ul>
+      <li v-for="line in output">
+        {{ line }}
+      </li>
+    </ul>
+  </p>
 </template>
 
 <script lang="ts">
-import ProcessRawInstructions from '@/mixins/ProcessRawInstructions.vue';
+import ProcessInstructions from '@/mixins/ProcessInstructions.vue';
 import {ProcessedInstructions} from "@/interfaces";
 export default {
   name: "Form",
-  mixins: [ProcessRawInstructions],
+  mixins: [ProcessInstructions],
   data() {
     return {
       instructions: '5 3\n' +
@@ -27,14 +37,14 @@ export default {
           '\n' +
           '0 3 W\n' +
           'LLFFFLFLFL',
+      output: [],
     };
   },
   methods: {
     handleInput(): void {
-      console.log(this.instructions)
       const instructionsObj: ProcessedInstructions = this.rawToObj(this.instructions);
-      console.log(instructionsObj)
-      this.carryOutInstructions(instructionsObj);
+      const output: string[] = this.carryOutInstructions(instructionsObj);
+      this.output = output;
     },
   }
 }

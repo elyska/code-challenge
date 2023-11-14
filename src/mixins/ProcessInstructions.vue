@@ -68,11 +68,10 @@ function move(orientation, currentX, currentY): Coordinates {
 }
 
 export default {
-  name: "ProcessRawInstructions",
+  name: "ProcessInstructions",
   methods: {
     rawToObj(instructions: string): ProcessedInstructions {
       let lines: string[] = instructions.split(/\r?\n/);
-      console.log(lines);
       // get the grid dimensions
       const gridDimensions: string[] = lines[0].split(" ");
       if (gridDimensions.length !== 2 || !isValidCoordinate(gridDimensions[0]) || !isValidCoordinate(gridDimensions[1])) {
@@ -118,7 +117,7 @@ export default {
     },
     carryOutInstructions(instructions: ProcessedInstructions): string[] {
       const output: string[] = [];
-      const warnings: Coordinates[] = [];
+      const warnings: Coordinates[] = []; // last locations of lost ship
       for (const shipData: Ship of instructions.ships) {
         const currentShipState: ShipState = {
           x: shipData.x,
@@ -127,37 +126,41 @@ export default {
           lost: false,
         }
         for (const step: string of shipData.steps) {
+          // turn
           if (step === "L" || step === "R") {
             const newOrientation: string = turn(currentShipState.orientation, step);
             currentShipState.orientation = newOrientation;
           }
+          // move
           else if (step === "F") {
             const newPosition: Coordinates = move(currentShipState.orientation, currentShipState.x, currentShipState.y);
+
             // check the new position is not out of the grid
             if (newPosition.x > instructions.width || newPosition.x < 0 ||
                 newPosition.y > instructions.height || newPosition.y < 0) {
               // check warnings
-              let warned = false;
+              let warned: boolean = false;
               for (const warning of warnings) {
                 if (currentShipState.x === warning.x && currentShipState.y === warning.y) {
                   warned = true;
                   break;
                 }
               }
-              if (warned) continue;
+              if (warned) continue; // ignore command to move out of the grid
+
               currentShipState.lost = true;
               warnings.push({ x: currentShipState.x, y: currentShipState.y });
               break;
             }
+
             currentShipState.x = newPosition.x;
             currentShipState.y = newPosition.y;
           }
         }
+
         const shipOutput: string = `${currentShipState.x} ${currentShipState.y} ${currentShipState.orientation} ${currentShipState.lost ? "LOST" : ""}`;
         output.push(shipOutput)
       }
-      console.log(output)
-      console.log(warnings)
       return output;
     },
   },
