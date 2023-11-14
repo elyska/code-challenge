@@ -136,18 +136,28 @@ export default {
             // check the new position is not out of the grid
             if (newPosition.x > instructions.width || newPosition.x < 0 ||
                 newPosition.y > instructions.height || newPosition.y < 0) {
+              // check warnings
+              let warned = false;
+              for (const warning of warnings) {
+                if (currentShipState.x === warning.x && currentShipState.y === warning.y) {
+                  warned = true;
+                  break;
+                }
+              }
+              if (warned) continue;
               currentShipState.lost = true;
+              warnings.push({ x: currentShipState.x, y: currentShipState.y });
               break;
             }
             currentShipState.x = newPosition.x;
             currentShipState.y = newPosition.y;
           }
-          console.log(currentShipState)
         }
         const shipOutput: string = `${currentShipState.x} ${currentShipState.y} ${currentShipState.orientation} ${currentShipState.lost ? "LOST" : ""}`;
         output.push(shipOutput)
       }
       console.log(output)
+      console.log(warnings)
       return output;
     },
   },
