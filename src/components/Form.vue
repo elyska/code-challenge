@@ -8,6 +8,9 @@
     ></textarea>
     <br/>
     <button class="btn btn-primary" type="submit" @click="handleInput">Submit</button>
+    <p v-if="errorMessage" class="alert alert-warning mt-4" role="alert">
+      {{ errorMessage }}
+    </p>
   </form>
   <br/>
   <p>
@@ -26,7 +29,11 @@ import {ProcessedInstructions} from "@/interfaces";
 export default {
   name: "Form",
   mixins: [ProcessInstructions],
-  data() {
+  data(): {
+    instructions: string;
+    output: string[];
+    errorMessage: string;
+  } {
     return {
       instructions: '5 3\n' +
           '1 1 E\n' +
@@ -38,13 +45,21 @@ export default {
           '0 3 W\n' +
           'LLFFFLFLFL',
       output: [],
+      errorMessage: "",
     };
   },
   methods: {
     handleInput(): void {
-      const instructionsObj: ProcessedInstructions = this.rawToObj(this.instructions);
-      const output: string[] = this.carryOutInstructions(instructionsObj);
-      this.output = output;
+      this.errorMessage = "";
+      try {
+
+        const instructionsObj: ProcessedInstructions = this.rawToObj(this.instructions);
+        const output: string[] = this.carryOutInstructions(instructionsObj);
+        this.output = output;
+      }
+      catch (message) {
+        this.errorMessage = message;
+      }
     },
   }
 }

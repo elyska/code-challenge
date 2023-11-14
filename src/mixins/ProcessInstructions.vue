@@ -94,6 +94,10 @@ export default {
         }
         const x: number = Number(shipPos[0]);
         const y: number = Number(shipPos[1]);
+        if (x > width || x < 0 || y > height || y < 0) {
+          throw new Error("Ship off the grid: " + shipLines[i]);
+        }
+
         const orientation: string = shipPos[2];
 
         const steps: string = shipLines[i + 1];
