@@ -1,3 +1,13 @@
+# Run the Code 
+
+```bash
+npm install
+```
+```bash
+npm run dev
+```
+
+
 # Pixelhop - Code Challenge
 
 ## Introduction
