@@ -5,7 +5,7 @@
 <script lang="ts">
 
 
-import {ProcessedInstructions, Ship, Coordinates} from "@/interfaces";
+import {ProcessedInstructions, Ship, Coordinates, ShipState} from "@/interfaces";
 
 // checks the coordinate is a number within given bounds 0 - 50
 function isValidCoordinate(coord: string): boolean {
@@ -120,10 +120,11 @@ export default {
       const output: string[] = [];
       const warnings: Coordinates[] = [];
       for (const shipData: Ship of instructions.ships) {
-        const currentShipState = {
+        const currentShipState: ShipState = {
           x: shipData.x,
           y: shipData.y,
           orientation: shipData.orientation,
+          lost: false,
         }
         for (const step: string of shipData.steps) {
           if (step === "L" || step === "R") {
@@ -132,12 +133,18 @@ export default {
           }
           else if (step === "F") {
             const newPosition: Coordinates = move(currentShipState.orientation, currentShipState.x, currentShipState.y);
+            // check the new position is not out of the grid
+            if (newPosition.x > instructions.width || newPosition.x < 0 ||
+                newPosition.y > instructions.height || newPosition.y < 0) {
+              currentShipState.lost = true;
+              break;
+            }
             currentShipState.x = newPosition.x;
             currentShipState.y = newPosition.y;
           }
           console.log(currentShipState)
         }
-        const shipOutput: string = `${currentShipState.x} ${currentShipState.y} ${currentShipState.orientation}`;
+        const shipOutput: string = `${currentShipState.x} ${currentShipState.y} ${currentShipState.orientation} ${currentShipState.lost ? "LOST" : ""}`;
         output.push(shipOutput)
       }
       console.log(output)

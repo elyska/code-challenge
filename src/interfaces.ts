@@ -4,6 +4,12 @@ export interface Ship {
     orientation: string;
     steps: string;
 }
+export interface ShipState {
+    x: number;
+    y: number;
+    orientation: string;
+    lost: boolean;
+}
 
 export interface ProcessedInstructions {
     width: number;
