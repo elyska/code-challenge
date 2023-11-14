@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import ProcessRawInstructions from '@/mixins/ProcessRawInstructions.vue';
+import {ProcessedInstructions} from "@/interfaces";
 export default {
   name: "Form",
   mixins: [ProcessRawInstructions],
@@ -31,8 +32,9 @@ export default {
   methods: {
     handleInput(): void {
       console.log(this.instructions)
-      const instructionsObj = this.rawToObj(this.instructions);
+      const instructionsObj: ProcessedInstructions = this.rawToObj(this.instructions);
       console.log(instructionsObj)
+      this.carryOutInstructions(instructionsObj);
     },
   }
 }
