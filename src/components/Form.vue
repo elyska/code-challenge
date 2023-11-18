@@ -1,28 +1,35 @@
 <template>
-  <h1>Input</h1>
-  <form @submit.prevent>
-    <textarea class="form-control"
-              rows="10" cols="50"
-              v-model="instructions"
-              placeholder="Instructions"
-    ></textarea>
-    <br/>
-    <button class="btn btn-primary" type="submit" @click="handleInput">Submit</button>
-    <p v-if="errorMessage" class="alert alert-warning mt-4" role="alert">
-      {{ errorMessage }}
-    </p>
-  </form>
-  <br/>
-  <OceanGrid v-if="processedInstructions" :instructions="processedInstructions" />
-  <br/>
-  <p>
-    <h1 v-if="output.length > 0">Output</h1>
-    <ul>
-      <li v-for="line in output">
-        {{ line }}
-      </li>
-    </ul>
-  </p>
+  <div class="container mt-3">
+    <div class="row gx-5">
+      <div class="col-12 col-sm-3">
+        <h1>SURVEY SHIPS</h1>
+        <h2>INPUT</h2>
+        <form @submit.prevent>
+          <textarea class="form-control mb-2 mt-2"
+                    rows="10" cols="50"
+                    v-model="instructions"
+                    placeholder="Instructions"
+          ></textarea>
+          <button type="submit" @click="handleInput">Submit</button>
+          <p v-if="errorMessage" class="alert alert-warning mt-4" role="alert">
+            {{ errorMessage }}
+          </p>
+        </form>
+
+        <div  v-if="output.length > 0" class="mt-3">
+          <h2>OUTPUT</h2>
+          <div class="output-container">
+            <p v-for="line in output">
+              {{ line }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-9 mt-3 grid-container">
+        <OceanGrid v-if="processedInstructions" :instructions="processedInstructions" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

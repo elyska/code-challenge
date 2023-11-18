@@ -1,3 +1,18 @@
-
+@import "form.css";
 @import "ocean-grid.css";
 @import "ship.css";
+@font-face {
+    font-family: VT323;
+    src: url("../fonts/VT323-Regular.ttf");
+}
+
+body {
+    background-color: #110f0f !important;
+    color: #00FF00 !important;
+    font-family: VT323, "Courier New" !important;
+}
+
+h2 {
+    border: 2px solid #00FF00 !important;
+    padding: 0 8px;
+}
