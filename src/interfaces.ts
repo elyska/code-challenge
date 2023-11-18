@@ -1,13 +1,17 @@
+
+export type Orientation = "N" | "E" | "S" | "W";
+
+export type Command = "L" | "R" | "F";
 export interface Ship {
     x: number;
     y: number;
-    orientation: string;
+    orientation: Orientation;
     steps: string;
 }
 export interface ShipState {
     x: number;
     y: number;
-    orientation: string;
+    orientation: Orientation;
     lost: boolean;
 }
 

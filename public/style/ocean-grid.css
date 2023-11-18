@@ -1,0 +1,19 @@
+.grid {
+    position: relative;
+}
+.grid-line-horizontal {
+    position: absolute;
+    border-bottom: 3px dashed #12a612;
+}
+.grid-line-vertical {
+    position: absolute;
+    border-left: 3px dashed #12a612;
+}
+.grid-point {
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background: #12a612;
+    position: absolute;
+    transform: translate(-8px, 8px);
+}
