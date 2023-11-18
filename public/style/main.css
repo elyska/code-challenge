@@ -1,13 +1,15 @@
 @import "form.css";
 @import "ocean-grid.css";
 @import "ship.css";
+@import "radar.css";
+
 @font-face {
     font-family: VT323;
     src: url("../fonts/VT323-Regular.ttf");
 }
 
 body {
-    background-color: #110f0f !important;
+    background-color: black !important;
     color: #00FF00 !important;
     font-family: VT323, "Courier New" !important;
 }

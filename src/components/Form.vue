@@ -27,6 +27,7 @@
       </div>
       <div class="col-12 col-sm-9 mt-3 grid-container">
         <OceanGrid v-if="processedInstructions" :instructions="processedInstructions" />
+        <Radar v-else />
       </div>
     </div>
   </div>
@@ -36,11 +37,12 @@
 import ProcessCommands from '@/mixins/ProcessCommands.vue';
 import {Coordinates, Orientation, ProcessedInstructions, Ship, ShipState} from "@/interfaces";
 import OceanGrid from "@/components/OceanGrid.vue";
+import Radar from "@/components/Radar.vue";
 
 
 export default {
   name: "Form",
-  components: {OceanGrid},
+  components: {OceanGrid, Radar},
   mixins: [ProcessCommands],
   data(): {
     instructions: string;

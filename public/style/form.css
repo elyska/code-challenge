@@ -35,6 +35,11 @@ button:hover {
     overflow: auto;
     height: 90vh;
 }
+@media (max-width: 620px) {
+    .grid-container {
+        height: 50vh;
+    }
+}
 
 .alert {
     border: 2px solid #FF0000 !important;

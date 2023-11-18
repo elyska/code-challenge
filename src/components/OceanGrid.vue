@@ -5,21 +5,20 @@
     <div class="grid-line-vertical" v-for="point in gridPoints" :style="{ height: `${height}px`, bottom: `0px`, left: `${point.x}px` }"></div>
 
     <div class="grid-point" v-for="point in gridPoints" :style="{ bottom: `${point.y}px`, left: `${point.x}px` }"></div>
-
     <Ship :instructions="instructions" />
   </div>
 </template>
 
 <script lang="ts">
 import {onUpdated} from "vue";
-import {Coordinates, ProcessedInstructions} from "@/interfaces";
-import Constants from "@/mixins/Constants.vue";
 import Ship from "@/components/Ship.vue";
+import Constants from "@/mixins/Constants.vue";
+import {Coordinates, ProcessedInstructions} from "@/interfaces";
 
 export default {
   name: "OceanGrid",
-  components: {Ship},
   mixins: [Constants],
+  components: {Ship},
   props: {
     instructions: {
       type: Object as () => ProcessedInstructions,
