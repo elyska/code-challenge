@@ -79,7 +79,7 @@ export default {
 
         for (let j = 0; j < this.ships[i].steps.length; j++) {
           const command: Command = this.ships[i].steps[j];
-          // set new orientation and position
+          // set orientation and position
           if (command === "L" || command === "R") {
             const newOrientation: Orientation = this.turn(this.orientation, command);
             this.orientation = newOrientation;
@@ -87,9 +87,35 @@ export default {
           else if (command === "F") {
             const newPosition: Coordinates = this.move(this.orientation, this.shipX, this.shipY);
 
-            this.shipX = newPosition.x;
-            this.shipY = newPosition.y;
-
+            // check the new position is not out of the grid
+            if (newPosition.x > this.width || newPosition.x < 0 ||
+                newPosition.y > this.height || newPosition.y < 0) {
+              // check warnings
+              let warned: boolean = false;
+              for (const warning of this.warnings) {
+                if (this.shipX === warning.x && this.shipY === warning.y) {
+                  warned = true;
+                  break;
+                }
+              }
+              if (!warned) {
+                // add warning for other ships
+                this.warnings.push({ x: this.shipX, y: this.shipY });
+                // disappear
+                t.add({
+                  targets: `#ship${i}`,
+                  opacity: 0.5,
+                  scale: 0.7,
+                  duration: 500
+                });
+                break;
+              }
+              if (warned) continue; // ignore command to move out of the grid
+            }
+            else {
+              this.shipX = newPosition.x;
+              this.shipY = newPosition.y;
+            }
           }
           // animate changes in orientation / position
           t.add({
