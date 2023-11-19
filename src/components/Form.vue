@@ -25,8 +25,9 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-sm-9 mt-3 grid-container">
-        <OceanGrid v-if="processedInstructions && processedInstructions.width < 12 && processedInstructions.height < 8" :instructions="processedInstructions" />
+      <div class="col-12 col-sm-9 mt-3  mb-3 grid-container">
+        <OceanGrid v-if="processedInstructions" :instructions="processedInstructions" />
+<!--        <OceanGrid v-if="processedInstructions && processedInstructions.width < 12 && processedInstructions.height < 8" :instructions="processedInstructions" />-->
         <Radar v-else />
       </div>
     </div>

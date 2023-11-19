@@ -1,6 +1,8 @@
 <template>
-  <div class="grid" :style="{ width: `${width * gridPointDistance}px`, height: `${height * gridPointDistance}px` }">
-    <img v-for="(ship, index) in ships" :id="'ship' + index" class="ship" src="public/images/ship.svg" :style="{ bottom: `${ship.y * gridPointDistance}px`, left: `${ship.x * gridPointDistance}px` }">
+  <div class="ships" :style="'padding:' + offset/2 + 'px'">
+    <div class="ships-container">
+      <img v-for="(ship, index) in ships" :id="'ship' + index" class="ship" src="public/images/ship.svg" :style="{ bottom: `${ship.y * gridPointDistanceY}%`, left: `${ship.x * gridPointDistanceX}%`, width: `${offset}px`}">
+    </div>
   </div>
 </template>
 
@@ -8,16 +10,18 @@
 import {onUpdated} from "vue";
 import anime from 'animejs/lib/anime.es.js';
 import ProcessCommands from "@/mixins/ProcessCommands.vue";
-import Constants from "@/mixins/Constants.vue";
 import {Command, Coordinates, Orientation, ProcessedInstructions, Ship} from "@/interfaces";
 
 export default {
   name: "Ship",
-  mixins: [ProcessCommands, Constants],
+  mixins: [ProcessCommands],
   props: {
     instructions: {
       type: Object as () => ProcessedInstructions,
     },
+    offset: {
+      type: Number,
+    }
   },
   data(): {
     width: number,
@@ -27,6 +31,8 @@ export default {
     warnings: Coordinates[],
     shipX: number,
     shipY: number,
+    gridPointDistanceX: number,
+    gridPointDistanceY: number,
     orientation: Orientation | undefined,
   } {
     return {
@@ -38,6 +44,8 @@ export default {
       shipX: 0,
       shipY: 0,
       orientation: undefined,
+      gridPointDistanceX: 0,
+      gridPointDistanceY: 0,
     }
   },
   methods: {
@@ -47,6 +55,10 @@ export default {
 
       this.ships = this.instructions.ships;
       this.warnings = [];
+
+      // convert to percentages
+      this.gridPointDistanceX = 100/this.instructions.width;
+      this.gridPointDistanceY = 100/this.instructions.height;
     },
     animate(): void {
       const t = anime.timeline({
@@ -71,8 +83,8 @@ export default {
         t.add({
           targets: `#ship${i}`,
           opacity: 1,
-          translateX: -20,
-          translateY: 20,
+          translateX: -this.offset/2,
+          translateY: this.offset/2,
           rotate: this.orientationToRotation(this.ships[i].orientation),
           duration: 1
         })
@@ -120,8 +132,8 @@ export default {
           // animate changes in orientation / position
           t.add({
             targets:`#ship${i}`,
-            bottom: this.shipY * this.gridPointDistance,
-            left: this.shipX * this.gridPointDistance,
+            bottom: `${this.shipY * this.gridPointDistanceY}%`,
+            left: `${this.shipX * this.gridPointDistanceX}%`,
             rotate: this.orientationToRotation(this.orientation),
             duration: 200
           });
